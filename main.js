@@ -9,7 +9,13 @@ loadSprite("bomb", "sprites/bomb.png")
 loadSound("eat", "sounds/powerup.mp3")
 loadSound("explode", "sounds/explode.mp3")
 
+let score_value = 0
+
 scene("gameOver", () => {
+  add([
+    pos(24, 24),
+    text(`Score: ${score_value}`),
+  ])
   add([
     pos(width() / 2 - 220, height() / 2 - 140),
     text("GAME OVER\nPress Space to continue", {
@@ -24,11 +30,12 @@ scene("gameOver", () => {
 })
 
 scene("gameRunning", () => {
+  score_value = 0
   // add score text
   const score = add([
     text("Score: 0"),
     pos(24, 24),
-    { value: 0 },
+    { value: score_value },
   ])
 
   add([
@@ -61,8 +68,8 @@ scene("gameRunning", () => {
 
   onClick("apple", () => {
     destroyAll("apple")
-    addKaboom(mousePos())
-    score.value += 1
+    score_value += 1 // updates the variable to show on end screen
+    score.value += 1 // updates the value property of score
     score.text = "Score: " + score.value
     play("eat")
     add([
@@ -74,13 +81,13 @@ scene("gameRunning", () => {
   })
 
   onClick("bomb", () => {
+    addKaboom(mousePos())
     play("explode")
     shake(120)
-    go("gameOver")
+    wait(0.5, () => {
+      go("gameOver")
+    })
   })
 })
 
 go("gameRunning")
-
-// burp on "b"
-onKeyPress("b", burp)
