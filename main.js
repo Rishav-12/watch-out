@@ -11,6 +11,25 @@ loadSound("explode", "sounds/explode.mp3")
 
 let score_value = 0
 
+function addRandomly() {
+  let r = Math.random()
+  if (r < 0.55) {
+    add([
+      sprite("apple"),
+      pos(rand(width() - 80), rand(height() - 80)),
+      area(),
+      "apple",
+    ])
+  } else {
+    add([
+      sprite("bomb"),
+      pos(rand(width() - 80), rand(height() - 80)),
+      area(),
+      "bomb",
+    ])
+  }
+}
+
 scene("gameOver", () => {
   add([
     pos(24, 24),
@@ -38,32 +57,11 @@ scene("gameRunning", () => {
     { value: score_value },
   ])
 
-  add([
-    sprite("apple"),
-    pos(rand(width() - 80), rand(height() - 80)),
-    area(),
-    "apple",
-  ])
   // every 3 seconds spawn either an apple or a bomb
   loop(3, () => {
     destroyAll("apple")
     destroyAll("bomb")
-    let r = Math.random()
-    if (r < 0.7) {
-      add([
-        sprite("apple"),
-        pos(rand(width() - 80), rand(height() - 80)),
-        area(),
-        "apple",
-      ])
-    } else {
-      add([
-        sprite("bomb"),
-        pos(rand(width() - 80), rand(height() - 80)),
-        area(),
-        "bomb",
-      ])
-    }
+    addRandomly()
   })
 
   onClick("apple", () => {
@@ -72,12 +70,8 @@ scene("gameRunning", () => {
     score.value += 1 // updates the value property of score
     score.text = "Score: " + score.value
     play("eat")
-    add([
-      sprite("apple"),
-      pos(rand(width() - 80), rand(height() - 80)),
-      area(),
-      "apple",
-    ])
+    shake(80)
+    addRandomly()
   })
 
   onClick("bomb", () => {
