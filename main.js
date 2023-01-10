@@ -8,6 +8,7 @@ loadSprite("apple", "sprites/apple.png")
 loadSprite("bomb", "sprites/bomb.png")
 loadSound("eat", "sounds/powerup.mp3")
 loadSound("explode", "sounds/explode.mp3")
+loadSound("OtherworldlyFoe", "sounds/OtherworldlyFoe.mp3");
 
 let score_value = 0
 
@@ -29,6 +30,12 @@ function addRandomly() {
     ])
   }
 }
+
+const music = play("OtherworldlyFoe", {
+  volume: 0.5,
+  loop: true
+})
+music.play()
 
 scene("gameOver", () => {
   add([
